@@ -1,4 +1,5 @@
 const storyauthors = require('../services/authorService')
+const {validateAuthor} = require('../validate/validate');
 
 //get all Author
 exports.getAuthor= async (req, res, next) => {
@@ -27,14 +28,15 @@ exports.getAuthor= async (req, res, next) => {
   
   try {
 
-    const mysdy = await storyauthors.newAuthor(req.body);
-
-    res.send({
-      status: "success",
-      length: mysdy?.length,
-      data: mysdy,
-      message: "Successfully create Author"
-    });
+    const {error, value} = validateAuthor(req.body)
+    
+    if(error) {
+      console.log("eror insert author",error)
+      return res.send(error.details);
+    }else {
+      const mysdy = await storyauthors.newAuthor(value);
+      return res.send(mysdy);
+    } 
     
   }catch (e) {
     res.status(400).json({

@@ -1,6 +1,5 @@
 const db = require('../models/index');
-const Joi = require('joi');
-const {validateChapter} = require('../validate/validate');
+
 //npx sequelize-cli model:generate --name storyauthors --attributes storyauthorsName:string,description:text,status:integer,dateUpdated:date,dateCreated:date
 //npx sequelize-cli model:generate --name stories --attributes name:string,link:string,description:text,images:text,status:integer,dateCreated:date,dateUpdated:date,storyauthorsId:bigint,storytypesId:bigint
 //npx sequelize-cli model:generate --name storychapters --attributes name:string,number:integer,content:text,status:integer,dateCreated:date,dateUpdated:date,storiesId:bigint

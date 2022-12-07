@@ -13,7 +13,7 @@ exports.getAuthor = async (data) => {
       }
     )
     return mysdy
-    
+
     } catch (e) {
       throw Error("Error while Paginating Author");
     }
@@ -22,17 +22,7 @@ exports.getAuthor = async (data) => {
   exports.newAuthor = async (data) => {
     try {
      
-      const createNow = await db.storyauthors.create({
-          // id: data.id,
-          storyauthorsName: data.storyauthorsName,
-          description: data.description,
-          status: data.status,
-          dateUpdated: data.dateUpdated,
-          dateCreated: data.dateCreated,
-
-      })
-       
-        return createNow
+      return await db.storyauthors.create(data)
 
     } catch (e) {
       console.log("E", e)

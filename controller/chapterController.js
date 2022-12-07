@@ -30,8 +30,7 @@ exports.getChapters= async (req, res, next) => {
 
     // phải validate trước , nếu ok thì gọi hàm tạo trong db, nếu validate sai thì báo lỗi
     const {error, value} = validateChapter(req.body)
-    console.log('error',error)
-    console.log('value',value)
+    
     if(error) {
       console.log("eror insert chapters",error)
       return res.send(error.details);
