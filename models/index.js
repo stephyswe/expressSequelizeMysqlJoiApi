@@ -43,4 +43,18 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+
+// One-To-Many
+
+db.stories.hasMany(db.storyauthors, {
+  foreignKey: 'id',
+  // as: 'storyauthors'
+})
+
+db.storyauthors.belongsTo(db.stories, {
+  foreignKey: 'id',
+  // as: 'stories'
+})
+
+
 module.exports = db;

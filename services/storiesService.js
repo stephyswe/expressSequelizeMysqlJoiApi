@@ -1,18 +1,29 @@
 const db = require('../models/index');
 
 //npx sequelize-cli model:generate --name stories --attributes name:string,link:string,description:text,images:text,status:integer,dateCreated:date,dateUpdated:date,storyauthorsId:bigint,storytypesId:bigint
-exports.getStories = async (data) => {
+exports.getStories = async (id,body) => {
     try {
 
-    const mysdy = await db.stories.findAll(  {
-      logging:true,
-      offset:0,
-      limit :2
-    })
-  
+      //get One-To-Many relationships
+
+      const mysdy = await db.stories.findOne({
+          include: [{
+              model: db.storyauthors,
+              as: 'storyauthors'
+          }],
+          where: { id: 248}
+      })
+    
+    // const mysdy = await db.stories.findAll(  {
+    //   logging:true,
+    //   offset:0,
+    //   limit :2
+    // })
+ 
     return mysdy
 
     } catch (e) {
+      console.log("get stories", e);
       throw Error("Error while Paginating Stories");
     }
   };

@@ -1,10 +1,13 @@
 const stories = require('../services/storiesService')
 
 //get all stories
+// 7. connect one to many relation Product and Reviews
+
+
 exports.getStories = async (req, res, next) => {
   try {
  
-    const mysdy = await stories.getStories();
+    const mysdy = await stories.getStories(req.body);
 
       res.send({
         status: "success",
