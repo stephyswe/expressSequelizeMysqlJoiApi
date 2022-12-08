@@ -48,13 +48,26 @@ db.Sequelize = Sequelize;
 
 db.stories.hasMany(db.storyauthors, {
   foreignKey: 'id',
-  // as: 'storyauthors'
+  // as: 'storyauthors,'//trong tep storiesService đã có nên sẽ gây trung lap
 })
 
 db.storyauthors.belongsTo(db.stories, {
   foreignKey: 'id',
   // as: 'stories'
 })
+
+db.stories.hasMany( db.storytypes, {
+  foreignKey: 'id',
+  // as: 'storytypes'
+})
+
+db.storytypes.belongsTo(db.stories, {
+  foreignKey: 'storytypesId',
+})
+
+
+
+//db.stories.belongsToMany(db.storytypes, { through: db.storytypes }); 
 
 
 module.exports = db;

@@ -7,11 +7,19 @@ exports.getStories = async (id,body) => {
       //get One-To-Many relationships
 
       const mysdy = await db.stories.findOne({
-          include: [{
+          include: [
+            {
               model: db.storyauthors,
-              as: 'storyauthors'
-          }],
-          where: { id: 248}
+              as: 'storyauthors',
+              attributes:['storyauthorsName',] //chỉ lấy một trường trong bảng
+          },
+          {
+            model: db.storytypes,
+            as: 'storytypes',
+            attributes:['name',]
+        },
+        ],
+          where: { id: 246}
       })
     
     // const mysdy = await db.stories.findAll(  {
