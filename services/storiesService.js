@@ -2,39 +2,43 @@ const db = require('../models/index');
 
 //npx sequelize-cli model:generate --name stories --attributes name:string,link:string,description:text,images:text,status:integer,dateCreated:date,dateUpdated:date,storyauthorsId:bigint,storytypesId:bigint
 exports.getStories = async (id,body) => {
-    try {
+  try {
 
-      //get One-To-Many relationships
+    //get One-To-Many relationships
 
-      const mysdy = await db.stories.findOne({
-          include: [
-            {
-              model: db.storyauthors,
-              as: 'storyauthors',
-              attributes:['storyauthorsName',] //chỉ lấy một trường trong bảng
-          },
+    const mysdy = await db.stories.findAll({
+       logging : true,
+        include: [
           {
-            model: db.storytypes,
-            as: 'storytypes',
-            attributes:['name',]
-        },
-        ],
-          where: { id: 246}
-      })
-    
-    // const mysdy = await db.stories.findAll(  {
-    //   logging:true,
-    //   offset:0,
-    //   limit :2
-    // })
- 
-    return mysdy
+            model: db.storyauthors,
+            as: 'storyauthors',
+            attributes: ['storyauthorsName']
+           
 
-    } catch (e) {
-      console.log("get stories", e);
-      throw Error("Error while Paginating Stories");
-    }
-  };
+            // attributes:['storyauthorsName',] //chỉ lấy một trường trong bảng
+        },
+        {
+          model: db.storytypes,
+          as: 'storytypes',
+          attributes:['name']
+      },
+      ],
+        // where: { id: id}
+    })
+  
+  // const mysdy = await db.stories.findAll(  {
+  //   logging:true,
+  //   offset:0,
+  //   limit :2
+  // })
+
+  return mysdy
+
+  } catch (e) {
+    console.log("get stories", e);
+    throw Error("Error while Paginating Stories");
+  }
+};
 
 
   exports.newStories = async (data) => {

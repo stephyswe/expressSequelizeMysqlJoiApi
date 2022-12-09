@@ -46,26 +46,24 @@ db.Sequelize = Sequelize;
 
 // One-To-Many
 
-db.stories.hasMany(db.storyauthors, {
-  foreignKey: 'id',
-  // as: 'storyauthors,'//trong tep storiesService đã có nên sẽ gây trung lap
-})
+// db.storyauthors.belongsTo(db.storytypes)
+// db.stories.belongsTo(db.storytypes, {foreignKey: 'id' , as: 'storytypes' });
 
-db.storyauthors.belongsTo(db.stories, {
-  foreignKey: 'id',
-  // as: 'stories'
-})
-
-db.stories.hasMany( db.storytypes, {
-  foreignKey: 'id',
-  // as: 'storytypes'
-})
-
-db.storytypes.belongsTo(db.stories, {
-  foreignKey: 'storytypesId',
-})
+// db.storytypes.hasMany(db.stories)
 
 
+// stories belongsTo storytypes
+// => db.stories.belongsTo(db.storytypes, {foreignKey: 'storytypesId' , as: 'storytypes' });
+// db.stories.hashMany(db.storyauthors)
+
+// db.stories.belongsToMany(db.storytypes, { through: 'stories_types' });
+//mot truyen co 1 tac gia
+db.storyauthors.hasMany(db.stories, {foreignKey: 'id' , as: 'stories' });
+db.stories.belongsTo(db.storyauthors, {foreignKey: 'id' , as: 'storyauthors' });
+
+//mot truyen có 1 thẻ loai
+db.storytypes.hasMany(db.stories, {foreignKey: 'storytypesId' , as: 'stories' });
+db.stories.belongsTo(db.storytypes, {foreignKey: 'storytypesId' , as: 'storytypes' });
 
 //db.stories.belongsToMany(db.storytypes, { through: db.storytypes }); 
 
