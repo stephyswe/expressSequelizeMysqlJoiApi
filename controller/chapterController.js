@@ -5,7 +5,7 @@ const {validateChapter} = require('../validate/validate');
 exports.getChapters= async (req, res, next) => {
   try {
  
-    const mysdy = await chapterService.getChapters();
+    const mysdy = await chapterService.getChapters(req.body);
 
       res.send({
         status: "success",

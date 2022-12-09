@@ -21,7 +21,7 @@ exports.getStories = async (id,body) => {
           model: db.storytypes,
           as: 'storytypes',
           attributes:['name']
-      },
+      }
       ],
         // where: { id: id}
     })

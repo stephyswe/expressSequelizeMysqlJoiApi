@@ -8,10 +8,18 @@ const db = require('../models/index');
 exports.getChapters = async (data) => {
     try {
 
-    const mysdy = await db.storychapters.findAll()
-  
+    const mysdy = await db.storychapters.findAll({
+      logging : true,
+      include: [
+      {
+        model: db.stories,
+        as: 'stories',
+        // attributes:['name']
+      },
+    ],
+  })
     return mysdy
-
+   
     } catch (e) {
       throw Error("Error while Paginating Chapters");
     }

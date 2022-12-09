@@ -57,6 +57,10 @@ db.Sequelize = Sequelize;
 // db.stories.hashMany(db.storyauthors)
 
 // db.stories.belongsToMany(db.storytypes, { through: 'stories_types' });
+
+
+//lấy  thông tin truyện thì phải lấy kèm theo tên tác giả , thể ,loại ok
+
 //mot truyen co 1 tac gia
 db.storyauthors.hasMany(db.stories, {foreignKey: 'id' , as: 'stories' });
 db.stories.belongsTo(db.storyauthors, {foreignKey: 'id' , as: 'storyauthors' });
@@ -64,6 +68,11 @@ db.stories.belongsTo(db.storyauthors, {foreignKey: 'id' , as: 'storyauthors' });
 //mot truyen có 1 thẻ loai
 db.storytypes.hasMany(db.stories, {foreignKey: 'storytypesId' , as: 'stories' });
 db.stories.belongsTo(db.storytypes, {foreignKey: 'storytypesId' , as: 'storytypes' });
+
+
+// lấy thông tin chương thì phải lấy thông tin truyện //ok
+db.stories.hasMany(db.storychapters, {foreignKey: 'storiesId' , as: 'storychapters' });
+db.storychapters.belongsTo(db.stories, {foreignKey: 'storiesId' , as: 'stories' });
 
 //db.stories.belongsToMany(db.storytypes, { through: db.storytypes }); 
 
