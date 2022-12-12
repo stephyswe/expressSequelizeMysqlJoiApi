@@ -1,13 +1,39 @@
 const db = require('../models/index');
+const Op = db.Sequelize.Op;
+
+
+const getPagination = (page, size) => {
+  const limit = size ? + size : 3;
+  const offset = page ? page * limit : 0;
+
+  return { limit, offset };
+};
+
+const getPagingData = (data, page, limit) => {
+  const { count: totalItems, rows: valueIndex } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { totalItems, valueIndex, totalPages, currentPage };
+};
 
 //npx sequelize-cli model:generate --name stories --attributes name:string,link:string,description:text,images:text,status:integer,dateCreated:date,dateUpdated:date,storyauthorsId:bigint,storytypesId:bigint
-exports.getStories = async (id,body) => {
+exports.getStories = async (query, data) => {
   try {
+
+    const { page, size, name } = query;
+    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null; //name="Hieu" lay tat ca truong name co ten laf hieu
+  
+    const { limit, offset } = getPagination(page, size);
+  
 
     //get One-To-Many relationships
 
-    const mysdy = await db.stories.findAll({
+    const mysdy = await db.stories.findAndCountAll({
        logging : true,
+       limit: limit, 
+       offset: offset,
+       condition: condition,
         include: [
           {
             model: db.storyauthors,
@@ -23,7 +49,7 @@ exports.getStories = async (id,body) => {
           attributes:['name']
       }
       ],
-        // where: { id: id}
+      // where: id
     })
   
   // const mysdy = await db.stories.findAll(  {
@@ -32,7 +58,7 @@ exports.getStories = async (id,body) => {
   //   limit :2
   // })
 
-  return mysdy
+  return getPagingData(mysdy, page, limit)
 
   } catch (e) {
     console.log("get stories", e);
