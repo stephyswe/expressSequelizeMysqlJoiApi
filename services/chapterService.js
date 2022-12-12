@@ -1,15 +1,20 @@
 const db = require('../models/index');
-
+const Sequelize = require('sequelize');
+const Op = db.Sequelize.Op;
 //npx sequelize-cli model:generate --name storyauthors --attributes storyauthorsName:string,description:text,status:integer,dateUpdated:date,dateCreated:date
 //npx sequelize-cli model:generate --name stories --attributes name:string,link:string,description:text,images:text,status:integer,dateCreated:date,dateUpdated:date,storyauthorsId:bigint,storytypesId:bigint
 //npx sequelize-cli model:generate --name storychapters --attributes name:string,number:integer,content:text,status:integer,dateCreated:date,dateUpdated:date,storiesId:bigint
 
 
-exports.getChapters = async (data) => {
+exports.getChapters = async (query, body) => {
     try {
 
+    //var condition = { name: { [Op.like]: `%${name}%` } }
+    const {name} = query   //content= undefined 
     const mysdy = await db.storychapters.findAll({
-      logging : true,
+      //where : {$and:Sequelize.literal(`storychapters.name like "%${name}%"`)},
+      where : {name : { [Op.like]: `%${name}%`} },
+       logging:true,
       include: [
       {
         model: db.stories,
@@ -21,6 +26,7 @@ exports.getChapters = async (data) => {
     return mysdy
    
     } catch (e) {
+      console.log("chpters errr", e);
       throw Error("Error while Paginating Chapters");
     }
   };

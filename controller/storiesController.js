@@ -7,7 +7,7 @@ const stories = require('../services/storiesService')
 exports.getStories = async (req, res, next) => {
   try {
  
-    const mysdy = await stories.getStories(req.body);
+    const mysdy = await stories.getStories(req.query);
 
       res.send({
         status: "success",

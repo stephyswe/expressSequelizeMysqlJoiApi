@@ -5,7 +5,7 @@ const {validateAuthor} = require('../validate/validate');
 exports.getAuthor= async (req, res, next) => {
   try {
  
-    const mysdy = await storyauthors.getAuthor();
+    const mysdy = await storyauthors.getAuthor(req.query);
 
       res.send({
         status: "success",
