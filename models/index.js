@@ -74,7 +74,9 @@ db.stories.belongsTo(db.storytypes, {foreignKey: 'storytypesId' , as: 'storytype
 db.stories.hasMany(db.storychapters, {foreignKey: 'storiesId' , as: 'storychapters' });
 db.storychapters.belongsTo(db.stories, {foreignKey: 'storiesId' , as: 'stories' });
 
-//db.stories.belongsToMany(db.storytypes, { through: db.storytypes }); 
+//Lưu ý quan tron các mối quan hệ 1,nhiều,nhiều nhiều cần có thuộc tính as as: 'storychapters' 
 
+// db.stories.belongsToMany(db.storytypes, { : 'stories_types' }); //through: gom bang thứ 3
+// db.storytypes.belongsToMany(db.stories, { through: 'stories_types' });
 
 module.exports = db;
