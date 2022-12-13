@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 //npx sequelize-cli model:generate --name storychapters --attributes name:string,number:integer,content:text,status:integer,dateCreated:date,dateUpdated:date,storiesId:bigint
 
 
-exports.getChapters = async (query, body) => {
+exports.getChapters = async (query, data) => {
     try {
 
     //var condition = { name: { [Op.like]: `%${name}%` } }

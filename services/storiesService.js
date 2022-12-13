@@ -1,7 +1,7 @@
 const db = require('../models/index');
 const Sequelize = require('sequelize');
 const Op = db.Sequelize.Op;
-
+const catchAsyncErrors = require('../middlewares/catchAsycError') 
 
 const getPagination = (page, size) => {
   const limit = size ? + size : 5;
@@ -19,7 +19,7 @@ const getPagination = (page, size) => {
 // };
 
 //npx sequelize-cli model:generate --name stories --attributes name:string,link:string,description:text,images:text,status:integer,dateCreated:date,dateUpdated:date,storyauthorsId:bigint,storytypesId:bigint
-exports.getStories = async (query, data) => {
+exports.getStories = async (query, body, limit) => {
   try {
  // truong name vua co the tim theo ten tac gia/ hoac ten truyen  => dung sequelize.literal
     const { page, size, name } = query;
@@ -31,8 +31,12 @@ exports.getStories = async (query, data) => {
     //var condition =  { name: { [Op.like]: `%${name}%` } } //`%${name}%` name="Hieu" lay tat ca truong name co ten laf hieu
     
     //var condition = {$and:Sequelize.literal(`stories.name like %${name}% `)}
+    console.log("page",page)
+    console.log("size",size)
+
     const { limit, offset } = getPagination(page, size);
-  
+    console.log("limit",limit)
+    console.log("offset",offset)
     //get One-To-Many relationships
 
     const mysdy = await db.stories.findAll({
@@ -73,7 +77,7 @@ exports.getStories = async (query, data) => {
     console.log("get stories", e);
     throw Error("Error while Paginating Stories");
   }
-};
+}
 
 
   exports.newStories = async (data) => {

@@ -24,5 +24,21 @@ const authorSchema = Joi.object({
           dateCreated: Joi.date(),
 })
 
+
+const storiesSchema = Joi.object({
+        name: Joi.string().min(1).max(100).required(),
+        link: Joi.string().min(1).max(400).required(),
+        description: Joi.string().min(1).max(400).required(),
+        images: Joi.number().integer().required(),
+        status: Joi.number().integer().required(),
+        dateUpdated: Joi.date(),
+        dateCreated: Joi.date(),
+        storyauthorsId: Joi.number().integer().required(),
+        storytypesId: Joi.number().integer().required(),
+})
+
+
+
 exports.validateChapter = validator(chapterSchema);
 exports.validateAuthor = validator(authorSchema);
+exports.validateStory = validator(storiesSchema);

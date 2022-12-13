@@ -1,12 +1,12 @@
 const stories = require('../services/storiesService')
-
+const {validateStory} = require('../validate/validate');
 //get all stories
 // 7. connect one to many relation Product and Reviews
 
 
 exports.getStories = async (req, res, next) => {
   try {
- 
+
     const mysdy = await stories.getStories(req.query);
 
       res.send({
@@ -29,15 +29,25 @@ exports.getStories = async (req, res, next) => {
  exports.newStories = async (req, res, next) => {
   
   try {
+    const {error, value} = validateStory(req.body)
 
-    const mysdy = await stories.newStories(req.body);
+    if(error) {
+      console.log("Get all story error!!!👽👻",error)
+      return res.send(error.details);
+    }else {
+      const mysdy = await stories.newStories(value);
+      return res.send(mysdy);
+    } 
 
-    res.send({
-      status: "success",
-      length: mysdy?.length,
-      data: mysdy,
-      message: "Successfully create stories"
-    });
+    // const mysdy = await stories.newStories(req.body);
+
+
+    // res.send({
+    //   status: "success",
+    //   length: mysdy?.length,
+    //   data: mysdy,
+    //   message: "Successfully create stories"
+    // });
     
   }catch (e) {
     res.status(400).json({
