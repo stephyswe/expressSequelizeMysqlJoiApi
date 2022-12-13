@@ -1,12 +1,11 @@
 const db = require('../models/index');
 const Sequelize = require('sequelize');
-const Op = db.Op;
+const Op = db.Sequelize.Op;
 
 
 const getPagination = (page, size) => {
   const limit = size ? + size : 5;
   const offset = page ? page * limit : 0;
-
 
   return { limit, offset };
 };
@@ -24,10 +23,14 @@ exports.getStories = async (query, data) => {
   try {
  // truong name vua co the tim theo ten tac gia/ hoac ten truyen  => dung sequelize.literal
     const { page, size, name } = query;
-   // var condition =  { [Op.and]: [{ name: { [Op.like]: `%${name}%` }}, { storyauthorsName: { [Op.like]: `%${name}%` } }], }
-    ///var condition =  { name: { [Op.like]: `%${name}%` } } //`%${name}%` name="Hieu" lay tat ca truong name co ten laf hieu
+    //select name in table stories(name) and seclect table storyauthors (storyauthorsName)
+   var condition =  { [Op.or]: [
+    { name: Sequelize.literal(`stories.name like "%${name}%"`) }, 
+    { storyauthorsName: Sequelize.literal(`storyauthors.storyauthorsName like "%${name}%"`) }
+  ]}
+    //var condition =  { name: { [Op.like]: `%${name}%` } } //`%${name}%` name="Hieu" lay tat ca truong name co ten laf hieu
     
-    var condition = {$and:Sequelize.literal(`storychapters.name like %${name}% `)}
+    //var condition = {$and:Sequelize.literal(`stories.name like %${name}% `)}
     const { limit, offset } = getPagination(page, size);
   
     //get One-To-Many relationships
@@ -36,14 +39,18 @@ exports.getStories = async (query, data) => {
        logging : true,
        limit: limit, 
        offset: offset,
-       where : condition,
+       where :  {
+        [Op.and]: condition,
+       // [Op.and]: Sequelize.literal(`stories.name like "%${name}%"  or storyauthors.storyauthorsName like "%${name}%" `)   
+      },
         include: [
           {
             model: db.storyauthors,
             as: 'storyauthors',
+           // where :  { storyauthorsName: { [Op.like]: `%${name}%` } },
             attributes: ['storyauthorsName']
 
-            // attributes:['storyauthorsName',] //chỉ lấy một trường trong bảng
+            // attributes:['storyauthorsName',] //attributes chỉ lấy một trường trong bảng
         },
         {
           model: db.storytypes,
